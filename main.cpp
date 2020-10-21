@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 
@@ -21,6 +22,38 @@ public:
     int getRAM ();
     void setAlmacenamiento (float v);
     float getAlmacenamiento ();
+
+// Sobrecarga del operador 
+    friend ostream& operator<<(ostream&out, const computadora &p)
+    {
+        // Imprimir cada atributo con out          
+            out << left ; // Para que todo este  alineado          
+            out << setw(20) << p.sistem_Op;
+            out << setw(20) << p.nombre_equipo;
+            out << setw(10) << p.ram;
+            out << setw(18) << p.almacenamiento;
+            out << endl;
+// En out estara toda la informacion
+            return out;
+    }
+// Sobrecargar el operador de entrada
+    friend istream& operator>>(istream&in, computadora &p)
+    {
+            cout << "Sistema Operativo: ";
+            getline (cin, p.sistem_Op);
+
+            cout << "Nombre del equipo: ";
+            getline (cin, p.nombre_equipo);
+
+            cout << "Ram: ";
+            cin >> p.ram;
+
+            cout << "Almacenamiento: ";
+            cin >> p.almacenamiento;
+
+            return in;
+    }
+
 };
 
 
@@ -84,13 +117,22 @@ void computadora::setAlmacenamiento(float v)
 //  Clase Administradora.h
 class Laboratorio
 {
-    computadora  arreglo [5];
+    computadora  arreglo [6];
     size_t cont;
     // Es un tipo de dato entero sin signo para iteraciones, contando de 0 a c/elementos.
 public:
     Laboratorio();
     void agregarcompu (const computadora &p);
     void mostrar ();
+
+// FRIEND regresa una referencia a LABORATORIO
+// v es referencia a nv
+    friend Laboratorio& operator<< (Laboratorio&v, const computadora &p)
+    {
+        v.agregarcompu (p);
+        return v;
+    }
+
 };
 
 //  Clase Administradora.cpp
@@ -99,10 +141,10 @@ Laboratorio::Laboratorio ()
 {
     cont = 0;
 }
-// contador para almacenar 5 elementos
+// contador para almacenar 6 elementos
 void Laboratorio::agregarcompu (const computadora &p)
 {
-    if (cont < 5)
+    if (cont < 6)
     {
         arreglo [cont] = p;
         cont++;
@@ -115,16 +157,24 @@ void Laboratorio::agregarcompu (const computadora &p)
 
 //Imprimira los datos que hayas ingresado, no necesariamente los 5 elementos.
 void Laboratorio::mostrar ()
-{
+{   
+    cout << left ;
+    cout << endl;
+    cout << setw (20) << "Sistema Operativo- ";
+    cout << setw (20) << "Nombre del equipo- ";
+    cout << setw (10) << "Ram- ";
+    cout << setw (18) << "Almacenamiento- ";
+    cout << endl;
+
     for (size_t i = 0; i < cont; i++)
     {   //p va a ser la referencia de quien esta opupando el lugar en "i".
         computadora &p = arreglo [i];
-        cout << endl;
-        cout << "Sistema Operativo: " << arreglo[i].getSistem_Op() << endl;
-        cout << "Nombre del equipo: " << arreglo[i].getNombre_equipo() << endl;
-        cout << "Ram: " << arreglo[i].getRAM() << "GB" << endl;
-        cout << "Almacenamiento: " << arreglo[i].getAlmacenamiento() << "GB" << endl;
-        cout << endl;
+        cout << p;
+    //    cout << "Sistema Operativo: " << arreglo[i].getSistem_Op() << endl;
+    //    cout << "Nombre del equipo: " << arreglo[i].getNombre_equipo() << endl;
+    //    cout << "Ram: " << arreglo[i].getRAM() << "GB" << endl;
+    //    cout << "Almacenamiento: " << arreglo[i].getAlmacenamiento() << "GB" << endl;
+    //    cout << endl;
     }
 }   
 
@@ -152,12 +202,21 @@ int main ()
 
     Laboratorio nv;
 
-    nv.agregarcompu (p02);
-    nv.agregarcompu (p03);
-    nv.agregarcompu (p04);
-    nv.agregarcompu (p05);
-    nv.agregarcompu (p06);
+//    nv.agregarcompu (p02);
+//    nv.agregarcompu (p03);
+//    nv.agregarcompu (p04);
+//    nv.agregarcompu (p05);
+//    nv.agregarcompu (p06);
+
+    nv << p02 << p03 << p04 << p05 << p06;
+
+//    cout << p02;
+    computadora p07;
+    cin >> p07;
+    nv << p07;
+
 
     nv.mostrar ();
+
     return 0;
 }
