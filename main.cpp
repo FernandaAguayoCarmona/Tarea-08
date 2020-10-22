@@ -1,5 +1,6 @@
 #include <iostream>
-#include <iomanip>
+#include <iomanip> //Acomodar las lineas al momento de imprimir
+#include <fstream> //Crear y escribir un archivo
 using namespace std;
 
 
@@ -121,9 +122,14 @@ class Laboratorio
     size_t cont;
     // Es un tipo de dato entero sin signo para iteraciones, contando de 0 a c/elementos.
 public:
-    Laboratorio();
+    Laboratorio ();
     void agregarcompu (const computadora &p);
     void mostrar ();
+
+// Crear y escribir un archivo en C++
+    void respaldar_tabla ();
+    void respaldar ();
+    void recuperar ();
 
 // FRIEND regresa una referencia a LABORATORIO
 // v es referencia a nv
@@ -134,6 +140,9 @@ public:
     }
 
 };
+
+
+
 
 //  Clase Administradora.cpp
 
@@ -177,6 +186,83 @@ void Laboratorio::mostrar ()
     //    cout << endl;
     }
 }   
+    void Laboratorio::respaldar_tabla ()
+    {
+        ofstream archivo("Computadoras_Tabla.txt");
+        if (archivo.is_open())
+        {
+            archivo << left ;
+            archivo << endl;
+            archivo << setw (20) << "Sistema Operativo- ";
+            archivo << setw (20) << "Nombre del equipo- ";
+            archivo << setw (10) << "Ram- ";
+            archivo << setw (18) << "Almacenamiento- ";
+            archivo << endl;
+
+            for (size_t i = 0; i < cont; i++)
+            {
+                computadora &p = arreglo [i];
+                archivo << p;
+                // Imprime en nuestro archivo
+            }
+        }
+        archivo.close();
+    }
+
+    void Laboratorio::respaldar()
+    {
+        ofstream archivo("Computadoras.txt");
+        if (archivo.is_open())
+        {
+            for (size_t i = 0; i < cont; i++)
+            {
+                computadora &p = arreglo [i];
+                archivo << p.getNombre_equipo () << endl;
+                archivo << p.getSistem_Op () << endl;
+                archivo << p.getRAM () << endl;
+                archivo << p.getAlmacenamiento () << endl;
+                // Imprime linea por linea
+            }
+        }
+        archivo.close();
+    }
+        void Laboratorio::recuperar()
+    {
+        ifstream archivo ("Computadoras.txt");
+        if (archivo.is_open())
+        {
+            string temp;
+            computadora p;
+            int ram;
+            float almacenamiento;
+            
+            while (true)
+            {
+                getline (archivo, temp);
+                if (archivo.eof())
+                    {
+                        break;
+                    } // terminar el ciclo
+                p.setSistem_Op (temp);
+
+                getline (archivo, temp);
+                p.setNombre_equipo (temp);
+
+                getline (archivo, temp);
+                ram = stoi (temp); // string to int
+                p.setRAM (ram);
+
+                getline (archivo, temp);
+                almacenamiento = stof (temp); // string to float
+                p.setAlmacenamiento (almacenamiento);
+
+                agregarcompu(p);
+            }
+        }
+        archivo.close();
+    }
+
+
 
 
 
@@ -184,7 +270,11 @@ void Laboratorio::mostrar ()
 //main.cpp
 int main () 
 {
-	computadora p02 = computadora ("Windows", "servidor", 16, 36.0); //computadora con contructor parametrizado
+    Laboratorio v;
+    v.recuperar();
+    v.mostrar();
+
+/*	computadora p02 = computadora ("Windows", "servidor", 16, 36.0); //computadora con contructor parametrizado
     computadora p04 = computadora ("Windows", "pc05", 2, 2.51);
     computadora p06 = computadora ("Windows", "Recepcion", 4, 9.36);
 
@@ -201,22 +291,26 @@ int main ()
     p05.setAlmacenamiento (16.55);
 
     Laboratorio nv;
-
-//    nv.agregarcompu (p02);
-//    nv.agregarcompu (p03);
-//    nv.agregarcompu (p04);
-//    nv.agregarcompu (p05);
-//    nv.agregarcompu (p06);
-
-    nv << p02 << p03 << p04 << p05 << p06;
+*/
+/*    nv.agregarcompu (p02);
+    nv.agregarcompu (p03);
+    nv.agregarcompu (p04);
+    nv.agregarcompu (p05);
+    nv.agregarcompu (p06);
+*/
+//    nv << p02 << p03 << p04 << p05 << p06;
 
 //    cout << p02;
-    computadora p07;
+/*    computadora p07;
     cin >> p07;
     nv << p07;
+*/
 
-
-    nv.mostrar ();
+// -    nv.mostrar ();
+// -    nv.respaldar_tabla();
+// muestre la tabla, respalda y termina el programa
+// -    nv.respaldar();
+// este lo muesta linea por linea
 
     return 0;
 }

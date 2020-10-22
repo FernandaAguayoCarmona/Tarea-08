@@ -1,0 +1,24 @@
+servidor
+Windows
+16
+36
+Computadora_5
+Mac
+8
+15.22
+pc05
+Windows
+2
+2.51
+maquinawow
+Mac
+2
+16.55
+Recepcion
+Windows
+4
+9.36
+Maquina 01
+Windows
+8
+8.1

@@ -1,0 +1,8 @@
+
+Sistema Operativo-  Nombre del equipo-  Ram-      Almacenamiento-   
+Windows             servidor            16        36                
+Mac                 Computadora_5       8         15.22             
+Windows             pc05                2         2.51              
+Mac                 maquinawow          2         16.55             
+Windows             Recepcion           4         9.36              
+Windows             Maquina 01          8         8.1               
